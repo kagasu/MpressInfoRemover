@@ -40,6 +40,19 @@ namespace MpressInfoRemover
             var fileName = args[0];
             var bytes = File.ReadAllBytes(fileName);
 
+            // IMAGE_DOS_HEADER
+            // WORD e_res2[10]
+            foreach (var i in Enumerable.Range(0, 20))
+            {
+                bytes[0x28 + i] = 0x00;
+            }
+
+            // Mpress Version
+            foreach (var i in Enumerable.Range(0, 16))
+            {
+                bytes[0x1F0 + i] = 0x00;
+            }
+
             // x86, x64
             // MPRESS1
             var sig = new byte[] { 0x4D, 0x50, 0x52, 0x45, 0x53, 0x53, 0x31 };
